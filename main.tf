@@ -19,20 +19,23 @@ data "aws_ami" "ubuntu" {
 }
 
 // defines components of your infrastructure. declares resource type and resource name.
+
+/*
 resource "aws_instance" "app_server" {
-  // references our dataID from earlier
+  # references our dataID from earlier
   ami = data.aws_ami.ubuntu.id
-  // aws free tier
+  # aws free tier
   instance_type = var.instance_type
 
   vpc_security_group_ids = [module.vpc.default_security_group_id]
   subnet_id              = module.vpc.private_subnets[0]
 
-  // EC2 instance tag arguments
+  # EC2 instance tag arguments
   tags = {
     Name = var.instance_name
   }
 }
+*/
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"

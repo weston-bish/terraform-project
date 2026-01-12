@@ -1,0 +1,36 @@
+name: Terraform Destroy
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Type DESTROY to confirm"
+        required: true
+
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Safety Check
+        run: |
+          if [ "${{ github.event.inputs.confirm }}" != "DESTROY" ]; then
+            echo "Confirmation failed. You must type DESTROY."
+            exit 1
+          fi
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

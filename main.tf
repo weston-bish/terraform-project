@@ -23,11 +23,11 @@ resource "aws_instance" "app_server" {
   // references our dataID from earlier
   ami = data.aws_ami.ubuntu.id
   // aws free tier
-  instance_type = "t3.micro" // tutorial used t2.micro which is no longer in free tier on aws
+  instance_type = var.instance_type
 
   // EC2 instance tag arguments
   tags = {
-    Name = "learn-terraform"
+    Name = var.instance_name
   }
 }
 
